@@ -1,6 +1,20 @@
 import React, { useState } from "react";
-import style from "./FormCostIncome.module.css";
-import { postIncomeCost } from "../../services/api";
+import {
+  button,
+  textarea,
+  formContainer,
+  categoriesList,
+  categoriesItem,
+  dateInput,
+  inputContainer,
+  commentsHeader,
+  categoriesHeader,
+  amountInputCost,
+  amountInputIncome,
+  blockHeader,
+  radioCost,
+  radioIncome,
+} from "./FormCostIncome.module.css";
 
 const categoriesCost = [
   "Main Expenses",
@@ -16,53 +30,26 @@ const categoriesCost = [
 
 const categoriesIncom = ["Regular Income", "Irregular Income"];
 
-const FormCostIncome = ({
-  actionType,
-  changeIsModalOpen,
-  balance,
-  token,
-  user,
-  getFinance
-}) => {
+const FormCostIncome = ({ actionType, changeIsModalOpen = null }) => {
   const categories =
     actionType === "COST" ? [...categoriesCost] : [...categoriesIncom];
 
   const amountStyle =
-    actionType === "COST" ? style.amountInputCost : style.amountInputIncome;
-
-  const radioStyle =
-    actionType === "COST" ? style.radioCost : style.radioIncome;
+    actionType === "COST" ? amountInputCost : amountInputIncome;
+    
+  const radioStyle = actionType === "COST" ? radioCost : radioIncome;
 
   const [amount, setAmount] = useState(0);
-  const [date, setDate] = useState(Date.now());
+  const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
   const [comments, setComments] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const time = new Date(date).getTime();
-    const balanceAfter = actionType === "COST" ? balance - amount : balance + Number.parseInt(amount);
-
-    if (!category) {
-      alert("Some require fields is empty!")
-      return;
-    }
-
-    const finance = {
-      date: time,
-      type: actionType === "COST" ? "-" : "+",
-      category: category,
-      amount: amount,
-      balanceAfter,
-      comments: comments,
-      typeBalanceAfter: balanceAfter > 0 ? "+" : "-",
-    };
-    console.log(finance);
-
-    postIncomeCost(user.id, token, finance);
-    getFinance();
-    if (changeIsModalOpen) changeIsModalOpen();
+    console.log(
+      `amount: ${amount}; date: ${date}; category: ${category}; comments: ${comments};`
+    );
+    if(changeIsModalOpen) changeIsModalOpen();
   };
 
   const handleChange = ({ target: { value, name } }) => {
@@ -84,8 +71,8 @@ const FormCostIncome = ({
     }
   };
   return (
-    <form className={style.formContainer} onSubmit={handleSubmit}>
-      <div className={style.inputContainer}>
+    <form className={formContainer} onSubmit={handleSubmit}>
+      <div className={inputContainer}>
         <input
           className={amountStyle}
           name="amount"
@@ -95,19 +82,17 @@ const FormCostIncome = ({
           min="0"
         />
         <input
-          className={style.dateInput}
+          className={dateInput}
           name="date"
           type="date"
           onChange={handleChange}
           placeholder="DD/MM/"
         />
       </div>
-      <span className={`${style.categoriesHeader} ${style.blockHeader}`}>
-        Categories
-      </span>
-      <ul className={style.categoriesList} role="group">
+      <span className={`${categoriesHeader} ${blockHeader}`}>Categories</span>
+      <ul className={categoriesList} role="group">
         {categories.map((category) => (
-          <li key={category} className={style.categoriesItem}>
+          <li key={category} className={categoriesItem}>
             <label>
               <input
                 className={radioStyle}
@@ -121,17 +106,15 @@ const FormCostIncome = ({
           </li>
         ))}
       </ul>
-      <span className={`${style.commentsHeader} ${style.blockHeader}`}>
-        Comments
-      </span>
+      <span className={`${commentsHeader} ${blockHeader}`}>Comments</span>
       <textarea
-        className={style.textarea}
+        className={textarea}
         onChange={handleChange}
         name="comments"
         type="textarea"
-        placeholder="Comment's"
+        placeholder="Lorem ipsum tararam pararam!"
       />
-      <button type="submit" className={style.button}>
+      <button type="submit" className={button}>
         Add
       </button>
     </form>

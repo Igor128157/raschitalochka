@@ -1,17 +1,15 @@
 import React from "react";
-import FormCostIncome from "../../components/FormCostIncome/containerCostIncome";
+import FormCostIncome from "../../components/FormCostIncome";
 
 import {
   incomCostBlock,
   svgArrow,
   incomCostHeader,
-  incomCostWrapper,
-  incomCostContainer
 } from "./CostIncome.module.css";
 
-const CostIncome = ({ actionType, changeIsFormOpen }) => {
+const CostIncome = ({ actionType }) => {
   return (
-    <div className={incomCostWrapper}>
+    <div>
       <div className={incomCostBlock}>
         <svg
           className={svgArrow}
@@ -19,18 +17,14 @@ const CostIncome = ({ actionType, changeIsFormOpen }) => {
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          onClick={changeIsFormOpen}
-          name='backArrow'
+          onClick={()=>{console.log("back")}}
         >
           <path fill="none" d="M0 0h24v24H0V0z" />
           <path d="M22 12l-4-4v3H3v2h15v3l4-4z" />
         </svg>
         <h3 className={incomCostHeader}>{`ADD ${actionType}`}</h3>
       </div>
-    <div className={incomCostContainer}>
-
-      <FormCostIncome actionType={actionType} changeIsModalOpen={changeIsFormOpen} />
-      </div>
+      <FormCostIncome actionType={actionType} changeIsModalOpen={() => {}} />
     </div>
   );
 };

@@ -1,26 +1,17 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import Registartion from "../Registration/Registration";
-import Login from "../Login/Login";
-import Home from "../../Pages/Home/HomeContainer";
-import { load } from "../../services/localStorage";
+import Registartion from '../Registration/Registration';
+import Login from '../Login/Login'
 
-export const App = (props) => {
-  const isAuthorized = load("session");
+
+export const App = () => {
   return (
     <div>
-      <Router>
-        <Route
-          path="/"
-          render={() =>
-            isAuthorized ? <Redirect to="/home" /> : <Redirect to="/login" />
-          }
-        />
-        <Route path="/login" exact component={Login} />
-        <Route path="/registration" component={Registartion} />
-        <Route path="/home" component={Home} />
-      </Router>
+      {/* <Login /> */}
+      <Registartion />
     </div>
   );
 };

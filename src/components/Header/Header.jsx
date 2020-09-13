@@ -1,10 +1,5 @@
 import React from "react";
 import { useMediaQuery } from "react-responsive";
-import { NavLink } from "react-router-dom";
-
-import withAuth from "../../hoc/withAuth";
-
-import { load } from "../../services/localStorage";
 import logoIcon from "../../images/logo.png";
 import exit from "../../images/exit.png";
 import {
@@ -12,37 +7,32 @@ import {
   headerLeftWrapper,
   headerRightWrapper,
   logo,
-  logoutStyle,
+  logout,
   userName,
   wrapper,
 } from "./Header.module.css";
 
-const Header = ({ logout, history, user }) => {
+const Header = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
-
-  const handleClickLogout = () => {
-    logout(load("token"));
-    history.push("/login");
-  };
 
   return (
     <div className={wrapper}>
       <div className={header}>
-        <NavLink to="/home" className={headerLeftWrapper}>
+        <div className={headerLeftWrapper}>
           <img src={logoIcon} alt="logo" className={logo} />
           {isMobile ? null : <p>Raschitalochka</p>}
-        </NavLink>
+        </div>
 
         <div className={headerRightWrapper}>
-          <p className={userName}>{user.userName}</p>
-          <div onClick={handleClickLogout} className={logoutStyle}>
+          <p className={userName}>Your Name</p>
+          <a href="#" className={logout}>
             <img src={exit} alt="logo" />
             {isMobile ? null : <p>Logout</p>}
-          </div>
+          </a>
         </div>
       </div>
     </div>
   );
 };
 
-export default withAuth(Header);
+export default Header;
